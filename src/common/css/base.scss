@@ -1,0 +1,10 @@
+$themeGray: #E9E9E9;
+
+button {
+    padding: 0;
+    border: none;
+    outline: none;
+    &::after{
+        border: none; 
+    }
+}
