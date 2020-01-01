@@ -6,6 +6,7 @@
             <div class="toggle-wrap">
                 <span class="type-item" :class="{'active': chosenType === 'dish'}" @click="toggleMode('dish')">菜</span>
                 <span class="type-item" :class="{'active': chosenType === 'soup'}" @click="toggleMode('soup')">汤</span>
+                <h3 @click="editMenu">自定义菜单</h3>
             </div>
         </div>
     </div>
@@ -17,7 +18,6 @@ import {
     SET_DISH_LIST,
     SET_SOUP_LIST
 } from '../../store/mutation-types';
-
 export default {
     data () {
         return {
@@ -84,9 +84,26 @@ export default {
             this.lotteryTimer = setTimeout(() => {
                 this.startLottery();
             }, 50);
+        },
+        editMenu() {
+            wx.navigateTo({
+                url: '/pages/menu/main'
+            });
         }
     },
-    onLoad() {}
+    onLoad() {
+        const storageDishList = wx.getStorageSync('dishList');
+        const storageSoupList = wx.getStorageSync('soupList');
+        if (storageDishList) {
+            this.setDishList(storageDishList);
+        }
+        if (storageSoupList) {
+            this.setSoupList(storageSoupList);
+        }
+    },
+    onShow() {
+        this.currentOrder = -1;
+    }
 }
 </script>
 
@@ -156,7 +173,7 @@ export default {
             -webkit-transition: .3s;
             transition: .3s;
             z-index: 4;
-            font-size: 12px;
+            font-size: 14px;
             span {
                 width: 30px;
                 text-align: center;
@@ -174,6 +191,16 @@ export default {
                     height: 1em;
                     padding: 5px 10px;
                 }
+            }
+            h3 {
+                width: 100%;
+                height: auto;
+                position: absolute;
+                left: 0;
+                bottom: -25px;
+                text-align: center;
+                color: #999;
+                font-size: 12px;
             }
         }
     }
